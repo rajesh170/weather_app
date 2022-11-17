@@ -12,11 +12,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // @override
-  // void initState() {
-  //   splashTimer();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    splashTimer();
+    super.initState();
+  }
 
   void splashTimer() {
     Timer(const Duration(seconds: 5), () {

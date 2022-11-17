@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -16,10 +18,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _formKey = GlobalKey<FormState>();
 
+
+
+
   @override
   Widget build(BuildContext context) {
     WeatherController weatherController = Get.put(WeatherController());
     final sharedPreferences = Get.find<ServicePref>();
+    onChanged(String val){
+      print("#################3333");
+      print(val);
+      weatherController.cityNameController.text=val;
+      weatherController.getWeather(context);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Weather App"),
@@ -38,6 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(15.0),
                   child: TextFormField(
                     controller: weatherController.cityNameController,
+                   onChanged: (val) =>weatherController.debounce(const Duration(seconds: 2), onChanged, [val]),
+
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter any city";

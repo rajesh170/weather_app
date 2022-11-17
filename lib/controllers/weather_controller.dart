@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,7 @@ class WeatherController extends GetxController {
   RxBool isWelcomed = false.obs;
   RxString currentText = "".obs;
   RxString currentIcon = "".obs;
-  String rajesh = "my name is rajesh";
+
 
   TextEditingController cityNameController = TextEditingController();
 
@@ -32,6 +34,22 @@ class WeatherController extends GetxController {
     var city = await _sharedPreferences.getCityName();
     cityNameController.text = city;
   }
+
+
+
+  final Map<Function, Timer?> _timeouts = {};
+  void debounce(Duration timeout, Function target, [List arguments = const []]) {
+    if (_timeouts.containsKey(target)) {
+      _timeouts[target]!.cancel();
+    }
+
+    Timer timer = Timer(timeout, () {
+      Function.apply(target, arguments);
+    });
+
+    _timeouts[target] = timer;
+  }
+
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
